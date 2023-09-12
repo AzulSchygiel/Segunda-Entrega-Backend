@@ -1,6 +1,13 @@
 //-----SERVIDOR EXPRESS-----//
 import express, { request, response } from "express";
 
+//-----IMPORTACION DE "PRODUCT MANAGER"-----//
+import { ProductManager } from "./desafio ProductManager";
+console.log(ProductManager)
+
+const managerProductsService = new ProductManager("./servidor_express/src/videojuegos.json");
+console.log(managerProductsService);
+
 const port = 8080;
 
 const app = express();
