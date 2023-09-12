@@ -5,7 +5,7 @@ import express, { request, response } from "express";
 import { ProductManager } from "./desafio ProductManager";
 console.log(ProductManager)
 
-const managerProductsService = new ProductManager("./servidor_express/src/videojuegos.json");
+const managerProductsService = new ProductManager("./src/videojuegos.json");
 console.log(managerProductsService);
 
 const port = 8080;
