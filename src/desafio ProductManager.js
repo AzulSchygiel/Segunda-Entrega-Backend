@@ -1,4 +1,5 @@
-class ProductManager{
+import fs from "fs"; 
+export class ProductManager{
     constructor(path) {
         this.path = path
         const productManager = new ProductManager("videojuegos.json")
@@ -51,38 +52,52 @@ obligatory(title, description, price, thumbnail, code, stock){
     console.log("Se agregó: ", newProduct)
     }
 
-    unicoCode(code){ //No se repita el Code
+unicoCode(code){ //No se repita el Code
         for(let i = 0; i < globalThis.products.length; i++){
         if(this.products[i].code === code) {
             return this.products[i]
         }
         }
         return null
-    }
+}
 
-    updateProduct(id, name){
+updateProduct(id, name){
         const product = this.findProductById(id)
         if (product === null) {
             throw new Error(`Producto buscado: ${id} not found`)
         }
     product.name = name
     this.products.find(p => p.id === product.id).name = name
-    }
+}
 
-    getProducts(){
-        return this.products
-    }
+fileExist(){
+        return fs.existsSync(this.pathFile)
+}
 
-    getProductById(id){
+async getProducts(){
+    try{
+        if(this.fileExist()){
+    const contenido = await fs.promises.readFile(this.pathFile, "utf-8");
+    const videojuegos = JSON.parse(contenido);
+    return videojuegos;
+    }else {
+        throw new Error("ERROR, NO SE OBTUVIERON LOS PRODUCTOS")
+    }
+    } catch (error){
+    throw error;
+    }
+}
+
+getProductById(id){
         for (const p of this.products)
         if (p.id === id){
             return {...p}
     }else{
     return null
     }
-    }
+}
 
-    deleteProduct(id){
+deleteProduct(id){
         const product = this.findProductById(id)
         if(product === null){
             throw new Error(`Producto buscado: ${id} not found`)
@@ -96,4 +111,3 @@ productManager.addProduct("Grand Theft Auto V", "Acción y aventura, mundo abier
 productManager.addProduct("Red Dead Redemption", "Acción y aventura, mundo abierto", 2000, "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.api.playstation.com%2Fcdn%2FUP1004%2FCUSA03041_00%2FHpl5MtwQgOVF9vJqlfui6SDB5Jl4oBSq.png&tbnid=oQnlJw8elTLfAM&vet=12ahUKEwi90aOB2uWAAxXMFLkGHQ2mAWAQMygAegQIARBz..i&imgrefurl=https%3A%2F%2Fwww.playstation.com%2Fes-ar%2Fgames%2Fred-dead-redemption-2%2F&docid=smbDnPb1swY1CM&w=1024&h=1024&q=Red%20Dead%20Redemption%202&hl=es-419&ved=2ahUKEwi90aOB2uWAAxXMFLkGHQ2mAWAQMygAegQIARBz", 3, 100)
 productManager.addProduct("Mortal Kombat 1", "Acción y lucha", 3000, "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.api.playstation.com%2Fvulcan%2Fap%2Frnd%2F202305%2F1515%2F93797636f47b37b74e9d3740e17ae1306aaf539c7952a703.jpg&tbnid=478w-M5mpUK5YM&vet=12ahUKEwjCt5CF3OWAAxWnupUCHeBxDwEQMygAegQIARBz..i&imgrefurl=https%3A%2F%2Fstore.playstation.com%2Fes-ar%2Fproduct%2FUP1018-PPSA07570_00-MKONE00000000000&docid=NaaGLY7xDoky8M&w=1440&h=2160&q=mortal%20kombat%201&hl=es-419&ved=2ahUKEwjCt5CF3OWAAxWnupUCHeBxDwEQMygAegQIARBz", 4, 50)
 productManager.addProduct("Stray", "Aventura y puzles", 1000, "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.wikia.nocookie.net%2Fstray%2Fimages%2F3%2F39%2FSite-community-image%2Frevision%2Flatest%3Fcb%3D20220731151430%26path-prefix%3Des&tbnid=C6HUPG6W2GdobM&vet=12ahUKEwiv7cLj3-WAAxWjrJUCHQ3hD2YQMygMegQIARBr..i&imgrefurl=https%3A%2F%2Fstray.fandom.com%2Fes%2Fwiki%2FStray&docid=g63aTmDI45LbuM&w=376&h=452&q=stray%20genero%20&hl=es-419&ved=2ahUKEwiv7cLj3-WAAxWjrJUCHQ3hD2YQMygMegQIARBr", 5, 200)
-
